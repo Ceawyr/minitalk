@@ -6,7 +6,7 @@
 /*   By: cnamoune <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 23:15:54 by cnamoune          #+#    #+#             */
-/*   Updated: 2024/12/19 19:09:27 by cnamoune         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:53:21 by cnamoune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	send_data(int server_pid, char *str)
 	while (*str)
 	{
 		c = (unsigned char)*str;
-		g_sig_get = 0;
 		i = 8;
 		while (i--)
 		{
@@ -37,9 +36,8 @@ void	send_data(int server_pid, char *str)
 			else
 				kill(server_pid, SIGUSR1);
 			while (g_sig_get == 0)
-			{
-				usleep(100);
-			}
+				usleep(50);
+			g_sig_get = 0;
 		}
 		str++;
 	}
@@ -47,8 +45,11 @@ void	send_data(int server_pid, char *str)
 	i = 8;
 	while (i--)
 	{
-		kill(server_pid, SIGUSR1);
-		write(1, "Envoi du caractère nul\n", 24);
+		if(kill(server_pid, SIGUSR1) == -1)
+			write(1, "Erreur d'envoi SIGUSR1\n", 24);
+		while (g_sig_get == 0)
+			usleep(50);
+		g_sig_get = 0;
 	}
 }
 int	main(int argc, char **argv)
