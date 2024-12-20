@@ -6,16 +6,21 @@
 /*   By: cnamoune <cnamoune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 20:49:34 by cnamoune          #+#    #+#             */
-/*   Updated: 2024/12/19 21:15:48 by cnamoune         ###   ########.fr       */
+/*   Updated: 2024/12/20 21:53:37 by cnamoune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+void	ft_putstr(char *str)
+{
+	write(1, str, ft_strlen(str));
+	write(1, "\n", 1);
+}
 
 void	get_signal(int signum, siginfo_t *info, void *context)
 {
 	static int				bit_nb;
-	static unsigned char	signal = 0;
+	static unsigned char	signal;
 	static char				*buffer;
 
 	(void)context;
@@ -50,11 +55,9 @@ int	main(void)
 	ft_memset(&sa, 0, sizeof(sa));
 	ft_putnbr(getpid());
 	write(1, "\n", 1);
-
 	sa.sa_sigaction = get_signal;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
-
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 	{
 		write(1, "Error with SIGUSR1. Closing server now.", 40);

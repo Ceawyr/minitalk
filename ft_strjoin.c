@@ -6,23 +6,22 @@
 /*   By: cnamoune <cnamoune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:12:22 by cnamoune          #+#    #+#             */
-/*   Updated: 2024/12/19 19:46:54 by cnamoune         ###   ########.fr       */
+/*   Updated: 2024/12/20 21:43:29 by cnamoune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-char	*ft_strjoin(char *s1, char c)
+char	*ft_strjoin(char *s1, unsigned char c)
 {
 	size_t	i;
 	char	*result;
 
 	if (!s1)
 	{
-		s1 = malloc(1);
+		s1 = ft_strdup("");
 		if (!s1)
 			return (NULL);
-		s1[0] = '\0';
 	}
 	result = malloc(ft_strlen(s1) + 2);
 	if (!result)
@@ -36,5 +35,4 @@ char	*ft_strjoin(char *s1, char c)
 	result[i++] = c;
 	result[i] = '\0';
 	return (free(s1), result);
-	return (0);
 }
